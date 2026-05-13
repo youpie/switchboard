@@ -29,9 +29,24 @@ This is a Home Assistant add-on that listens for incoming calls on Grandstream A
 > [!IMPORTANT]  
 > Only Home Assistant OS is supported for this addon. The Dockerfile and program can be reworked to run as a seperate docker container as well, but that is not a supported installation method.
 
-### Install the addon
-1. Manually copy the files in the `/switchboard` directory to the `/addons` folder in your local Home Assistant installation. 
-2. Navigate to the Addons menu, click refresh and install.
+### Add the repository to Home Assistant
+
+Click the button below to automatically add the repository to Home Assistant:
+
+[![Open your Home Assistant instance and add this repository.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https://github.com/noahhusby/switchboard)
+
+Or manually add the repository:
+1. Open Home Assistant
+2. Go to **Settings → Add-ons → Add-on Store**
+3. Click the **⋮** menu in the top-right corner
+4. Select **Repositories**
+5. Add:
+```text
+https://github.com/noahhusby/switchboard
+```
+6. Click **Add**
+7. Install the **Switchboard** add-on from the Add-on Store
+---
 
 ### Configure the ATA
 1. Login to your Grandstream ATA. 
