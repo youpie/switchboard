@@ -19,22 +19,26 @@ logger.info("Listening for Grandstream messages, set your ATA syslog address to 
 while True:
     data, addr = sock.recvfrom(4096)
     message = data.decode(errors='ignore')
-    logger.debug(message)
+    if not re.search(r':(?:enter|leave)', message):
+        logger.debug(message)
 
-    if not "startRing" in message:
-        continue
+    # if not "startRing" in message:
+    #     continue
 
     match = re.search(r'CID\s+(\d{10}),', message)
-    if not match:
-        continue
-    phone_number = match.group(1)
+    match_event = re.search(r'ATACtrl::processPhone(.*) on port (.):(.), status = ([^,]*)(?:,|$)', message) 
+    if match:
+        phone_number = match.group(1)
 
-    logger.info(f"Incoming call from {phone_number}")
-    headers = {
-        "Authorization": f"Bearer {os.environ['SUPERVISOR_TOKEN']}"
-    }
-    try:
-        requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME, headers=headers, json={"phone_number": phone_number})
-        logger.info(f"Sent webhook to endpoint {WEBHOOK_NAME}")
-    except Exception as e:
-        logger.error(f"Failed to send webhook to endpoint {WEBHOOK_NAME}")
+        logger.info(f"Incoming call from {phone_number}")
+        headers = {
+            "Authorization": f"Bearer {os.environ['SUPERVISOR_TOKEN']}"
+        }
+        try:
+            requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME, headers=headers, json={"phone_number": phone_number})
+            logger.info(f"Sent webhook to endpoint {WEBHOOK_NAME}")
+        except Exception as e:
+            logger.error(f"Failed to send webhook to endpoint {WEBHOOK_NAME}")
+
+    if match_event:
+        logger.info("Got event: {match_event}")
