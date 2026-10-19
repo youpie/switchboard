@@ -1,5 +1,5 @@
 name: switchboard
-version: 1.0.2
+version: 1.0.3
 slug: switchboard
 url: "https://github.com/noahhusby/switchboard"
 description: Inspects Grandstream ATAs syslog for incoming call events.

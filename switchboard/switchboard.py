@@ -27,6 +27,7 @@ while True:
 
     match = re.search(r'CID\s+(\d{10}),', message)
     match_event = re.search(r'process(:?Phone|Call)(.*) on port (.):(.), status = ([^,]*)(?:,|$)', message) 
+    call_started = re.search(r'Call started on port (.*):(.*)', message)
     if match:
         phone_number = match.group(1)
 
@@ -41,4 +42,10 @@ while True:
             logger.error(f"Failed to send webhook to endpoint {WEBHOOK_NAME}")
 
     if match_event:
-        logger.info("Got event: {match_event}")
+        if match_event.group(0) == 'OffHook':
+            requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME + '/off_hook', headers=headers)
+        if match_event.group(0) == 'OnHook':
+            requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME + '/on_hook', headers=headers)
+
+    if call_started:
+        requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME + '/call_started', headers=headers)
