@@ -46,6 +46,8 @@ while True:
             requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME, headers=headers, json={"state": "on_hook"})
         if match_event.group(0) == 'OnHook':
             requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME, headers=headers, json={"state": "off_hook"})
+        if match_event.group(0) == 'Cancelled':
+            requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME, headers=headers, json={"state": "cancelled"})
 
     if call_started:
         requests.post("http://supervisor/core/api/webhook/"+ WEBHOOK_NAME, headers=headers, json={"state": "call_started"})
