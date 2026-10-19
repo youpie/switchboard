@@ -19,7 +19,7 @@ logger.info("Listening for Grandstream messages, set your ATA syslog address to 
 while True:
     data, addr = sock.recvfrom(4096)
     message = data.decode(errors='ignore')
-    if not re.search(r':(?:enter|leave)', message):
+    if not re.search(r'(?::(?:enter|leave))|(?:Inaudio detected)', message):
         logger.debug(message)
 
     # if not "startRing" in message:
