@@ -29,9 +29,6 @@ while True:
         continue
     phone_number = match.group(1)
 
-    if caller_name == phone_number:
-        caller_name = None
-
     logger.info(f"Incoming call from {phone_number}")
     headers = {
         "Authorization": f"Bearer {os.environ['SUPERVISOR_TOKEN']}"
