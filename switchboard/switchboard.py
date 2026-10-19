@@ -19,14 +19,14 @@ logger.info("Listening for Grandstream messages, set your ATA syslog address to 
 while True:
     data, addr = sock.recvfrom(4096)
     message = data.decode(errors='ignore')
-    if not re.search(r'(?::(?:enter|leave))|(?:Inaudio detected)', message):
+    if not re.search(r'(?::(?:enter|leave))|(?:Inaudio detected)|(:?Memory Info)', message):
         logger.debug(message)
 
     # if not "startRing" in message:
     #     continue
 
     match = re.search(r'CID\s+(\d{10}),', message)
-    match_event = re.search(r'ATACtrl::processPhone(.*) on port (.):(.), status = ([^,]*)(?:,|$)', message) 
+    match_event = re.search(r'process(:?Phone|Call)(.*) on port (.):(.), status = ([^,]*)(?:,|$)', message) 
     if match:
         phone_number = match.group(1)
 
